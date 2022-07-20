@@ -1,6 +1,6 @@
 <form action="#" phx-submit="add">
-    <%= text_input :todo, :title, placeholder: "ex: laundry, dishes, etc." %>
-    <%= submit "Add", phx_disable_with: "Adding..." %>
+    <%= text_input :todo, :title, placeholder: "ex: laundry, dishes, etc.", style: "max-width:50%;" %>
+    <%= submit "Add", phx_disable_with: "Adding...", style: "float:right;" %>
 </form>
 
 <%= for todo <- @todos do %>
@@ -9,3 +9,7 @@
         <%= todo.title %>
     </div>
 <% end %>
+
+<button type="button" phx-click="clear_todos" style="background-color:red;border:none;">
+    Clear Done
+</button>

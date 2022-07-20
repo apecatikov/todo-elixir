@@ -22,6 +22,14 @@ defmodule TodoLiveWeb.TodoLive do
     {:noreply, socket}
   end
 
+  def handle_event("clear_todos", _params, socket) do
+    Todos.list_todos()
+    |> Enum.filter(fn todo -> todo.done end)
+    |> Enum.each(fn todo -> Todos.delete_todo(todo) end)
+
+    {:noreply, socket}
+  end
+
   def handle_info({Todos, [:todo | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
