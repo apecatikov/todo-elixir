@@ -3,12 +3,26 @@ defmodule TodoLiveWeb.TodoLive do
   alias TodoLive.Todos
 
   def mount(_params, _session, socket) do
+    Todos.subscribe()
+
     {:ok, fetch(socket)}
   end
 
   def handle_event("add", %{"todo" => todo}, socket) do
     Todos.create_todo(todo)
 
+    {:noreply, socket}
+  end
+
+  def handle_event("check_done", %{"id" => id}, socket) do
+    todo = Todos.get_todo!(id)
+
+    Todos.update_todo(todo, %{"done" => !todo.done})
+
+    {:noreply, socket}
+  end
+
+  def handle_info({Todos, [:todo | _], _}, socket) do
     {:noreply, fetch(socket)}
   end
 

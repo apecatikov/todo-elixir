@@ -8,6 +8,16 @@ defmodule TodoLive.Todos do
 
   alias TodoLive.Todos.Todo
 
+  @topic inspect(__MODULE__)
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(TodoLive.PubSub, @topic)
+  end
+
+  defp broadcast_chage({:ok, result}, event) do
+    Phoenix.PubSub.broadcast(TodoLive.PubSub, @topic, {__MODULE__, event, result})
+  end
+
   @doc """
   Returns the list of todos.
 
@@ -53,6 +63,7 @@ defmodule TodoLive.Todos do
     %Todo{}
     |> Todo.changeset(attrs)
     |> Repo.insert()
+    |> broadcast_chage([:todo, :created])
   end
 
   @doc """
@@ -71,6 +82,7 @@ defmodule TodoLive.Todos do
     todo
     |> Todo.changeset(attrs)
     |> Repo.update()
+    |> broadcast_chage([:todo, :updated])
   end
 
   @doc """
@@ -86,7 +98,9 @@ defmodule TodoLive.Todos do
 
   """
   def delete_todo(%Todo{} = todo) do
-    Repo.delete(todo)
+    todo
+    |> Repo.delete()
+    |> broadcast_chage([:todo, :deleted])
   end
 
   @doc """
