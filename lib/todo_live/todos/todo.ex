@@ -10,9 +10,10 @@ defmodule TodoLive.Todos.Todo do
   end
 
   @doc false
-  def changeset(todo, attrs) do
+  def changeset(todo, attrs \\ %{}) do
     todo
     |> cast(attrs, [:title, :done])
     |> validate_required([:title, :done])
+    |> validate_length(:title, min: 1, max: 100)
   end
 end

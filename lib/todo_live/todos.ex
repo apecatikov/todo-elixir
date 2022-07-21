@@ -14,7 +14,7 @@ defmodule TodoLive.Todos do
     Phoenix.PubSub.subscribe(TodoLive.PubSub, @topic)
   end
 
-  defp broadcast_chage({:ok, result}, event) do
+  defp broadcast_change({:ok, result}, event) do
     Phoenix.PubSub.broadcast(TodoLive.PubSub, @topic, {__MODULE__, event, result})
   end
 
@@ -60,10 +60,15 @@ defmodule TodoLive.Todos do
 
   """
   def create_todo(attrs \\ %{}) do
-    %Todo{}
-    |> Todo.changeset(attrs)
-    |> Repo.insert()
-    |> broadcast_chage([:todo, :created])
+    case Todo.changeset(%Todo{}, attrs)|> Repo.insert() do
+      {:ok, _todo} = result ->
+        broadcast_change(result, [:todo, :created])
+
+      {:error, _changeset} ->
+        # add error handling
+        :error
+    end
+
   end
 
   @doc """
@@ -79,10 +84,15 @@ defmodule TodoLive.Todos do
 
   """
   def update_todo(%Todo{} = todo, attrs) do
-    todo
-    |> Todo.changeset(attrs)
-    |> Repo.update()
-    |> broadcast_chage([:todo, :updated])
+    case Todo.changeset(todo, attrs) |> Repo.update() do
+      {:ok, todo} = result ->
+        broadcast_change(result, [:todo, :updated])
+        {:ok, todo}
+
+      {:error, changeset} ->
+        #add error handling
+       {:error, %{changeset: changeset, error_msg: "update failed"}}
+    end
   end
 
   @doc """
@@ -100,7 +110,7 @@ defmodule TodoLive.Todos do
   def delete_todo(%Todo{} = todo) do
     todo
     |> Repo.delete()
-    |> broadcast_chage([:todo, :deleted])
+    |> broadcast_change([:todo, :deleted])
   end
 
   @doc """
