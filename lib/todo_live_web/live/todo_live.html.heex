@@ -1,19 +1,41 @@
-<form action="#" phx-submit="add">
-    <%= text_input :todo, :title, placeholder: "ex: laundry, dishes, etc.", style: "max-width:50%;" %>
-    <%= submit "Add", phx_disable_with: "Adding...", style: "float:right;" %>
-</form>
+<container class="flex flex-col items-center">
+    <h1 class="text-red-500 text-5xl font-bold text-center">Todo list</h1>
 
-<%= for todo <- @todos do %>
-    <.form let={f} for={todo} phx-submit="update_todo">
-        <div style="border:solid;border-radius:15px;padding:4px;">
-            <%= hidden_input f, :id %>
-            <%= checkbox f, :done %>
-            <%= text_input f, :title %>
-            <%= submit "Update" %>
-        </div>
+    <.form let={f} for={:todo} phx-submit="add">
+        <%= text_input f, :title, placeholder: "ex: laundry, dishes, etc." %>
+        <%= submit "Add", phx_disable_with: "Adding...", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"%>
     </.form>
-<% end %>
 
-<button type="button" phx-click="clear_todos" style="background-color:red;border:none;">
-    Clear Done
-</button>
+    <%= for todo <- @todos do %>
+        <.form let={f} for={todo} phx-submit="update_todo">
+            <div class="p-10 hover:bg-gray-100">  
+                <div class="max-w-sm rounded overflow-hidden shadow-lg">
+                <img class="w-full" src="images/notebook.png" alt="Notebook with pen">
+                <div class="px-6 py-4">
+                    <label class="font-bold text-xl mb-2">
+                        <%= if f.data.done do %>
+                            Done! <%= checkbox f, :done %>
+                        <% else %>
+                            Todo <%= checkbox f, :done %>
+                        <% end %>
+                    </label>
+                    
+                    <p class="text-gray-700 text-base">
+                    <div class="grid grid-cols-1">
+                        <%= hidden_input f, :id %>
+                        <%= text_input f, :title %>
+                        <%= submit "Update", class: "bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"%>
+                    </div>
+                    </p>
+                </div>
+                </div>
+            </div>
+        </.form>
+    <% end %>
+
+    <button type="button" phx-click="clear_todos" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        Clear Done
+    </button>
+</container>
+
+

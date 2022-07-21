@@ -5,7 +5,9 @@ defmodule TodoLiveWeb.TodoLive do
   def mount(_params, _session, socket) do
     Todos.subscribe()
 
-    {:ok, fetch(socket)}
+    todos = Todos.list_todos()
+
+    {:ok, assign_todos(socket)}
   end
 
   def handle_event("add", %{"todo" => todo}, socket) do
@@ -32,10 +34,10 @@ defmodule TodoLiveWeb.TodoLive do
   end
 
   def handle_info({Todos, [:todo | _], _}, socket) do
-    {:noreply, fetch(socket)}
+    {:noreply, assign_todos(socket)}
   end
 
-  defp fetch(socket) do
+  defp assign_todos(socket) do
     assign(socket, todos: Todos.list_todos() |> Enum.map(&Todos.Todo.changeset/1))
   end
 end
