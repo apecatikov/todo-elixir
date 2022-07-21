@@ -1,41 +1,49 @@
-<container class="flex flex-col items-center">
-    <h1 class="text-red-500 text-5xl font-bold text-center">Todo list</h1>
+<container class="flex flex-col mx-auto w-[50%]">
+    <section class="w-full h-[5rem] bg-gradient-to-r from-cyan-500 to-blue-500 rounded-sm">
+        <h1 class="text-white text-xl font-bold text-center">Todo list</h1>
+    </section>
 
-    <.form let={f} for={:todo} phx-submit="add">
-        <%= text_input f, :title, placeholder: "ex: laundry, dishes, etc." %>
-        <%= submit "Add", phx_disable_with: "Adding...", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"%>
-    </.form>
-
-    <%= for todo <- @todos do %>
-        <.form let={f} for={todo} phx-submit="update_todo">
-            <div class="p-10 hover:bg-gray-100">  
-                <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                <img class="w-full" src="images/notebook.png" alt="Notebook with pen">
-                <div class="px-6 py-4">
-                    <label class="font-bold text-xl mb-2">
-                        <%= if f.data.done do %>
-                            Done! <%= checkbox f, :done %>
-                        <% else %>
-                            Todo <%= checkbox f, :done %>
-                        <% end %>
-                    </label>
-                    
-                    <p class="text-gray-700 text-base">
-                    <div class="grid grid-cols-1">
-                        <%= hidden_input f, :id %>
-                        <%= text_input f, :title %>
-                        <%= submit "Update", class: "bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"%>
-                    </div>
-                    </p>
-                </div>
-                </div>
-            </div>
+    <section class="max-w-md h-[5rem] mx-auto rounded px-8 pt-6 pb-8 mb-4">
+        <.form let={f} for={:todo} phx-submit="add">
+            <%= text_input f, :title, placeholder: "ex: laundry, dishes, etc." %>
+            <%= submit "Add", phx_disable_with: "Adding...", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"%>
         </.form>
-    <% end %>
+    </section>
 
-    <button type="button" phx-click="clear_todos" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-        Clear Done
-    </button>
+    <section class="max-w-md mx-auto">
+        <%= for todo <- @todos do %>
+            <.form let={f} for={todo} phx-submit="update_todo">
+                <div class="p-10 hover:border-l-[7px] border-cyan-500">  
+                    <div class="w-full rounded overflow-hidden shadow-lg">
+                    <img class="w-full" src="images/notebook.png" alt="Notebook with pen">
+                    <div class="px-6 py-4">
+                        <label class="font-bold text-xl mb-2">
+                            <%= if f.data.done do %>
+                                Done! <%= checkbox f, :done %>
+                            <% else %>
+                                Todo <%= checkbox f, :done %>
+                            <% end %>
+                        </label>
+                        
+                        <p class="text-gray-700 text-base">
+                        <div class="grid grid-cols-1">
+                            <%= hidden_input f, :id %>
+                            <%= text_input f, :title %>
+                            <%= submit "Update", class: "bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"%>
+                        </div>
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            </.form>
+        <% end %>
+    </section>
+
+    <section class="max-w-md">
+        <button type="button" phx-click="clear_todos" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Clear Done
+        </button>
+    </section>
 </container>
 
 
