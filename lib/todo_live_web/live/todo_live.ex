@@ -14,10 +14,11 @@ defmodule TodoLiveWeb.TodoLive do
     {:noreply, socket}
   end
 
-  def handle_event("check_done", %{"id" => id}, socket) do
+  def handle_event("update_todo", %{"todo" => params}, socket) do
+    id = params["id"]
     todo = Todos.get_todo!(id)
 
-    Todos.update_todo(todo, %{"done" => !todo.done})
+    Todos.update_todo(todo, params)
 
     {:noreply, socket}
   end
@@ -35,6 +36,6 @@ defmodule TodoLiveWeb.TodoLive do
   end
 
   defp fetch(socket) do
-    assign(socket,  todos: Todos.list_todos())
+    assign(socket, todos: Todos.list_todos() |> Enum.map(&Todos.Todo.changeset/1))
   end
 end
