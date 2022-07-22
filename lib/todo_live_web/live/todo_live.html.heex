@@ -1,19 +1,49 @@
-<form action="#" phx-submit="add">
-    <%= text_input :todo, :title, placeholder: "ex: laundry, dishes, etc.", style: "max-width:50%;" %>
-    <%= submit "Add", phx_disable_with: "Adding...", style: "float:right;" %>
-</form>
+<container class="flex flex-col mx-auto w-[50%] overflow-hidden h-screen rounded-t-lg shadow-lg shadow-cyan-500/70">
+    <section class="w-full h-[7rem] bg-gradient-to-r from-cyan-500 to-blue-500 ">
+        <h1 class="text-white text-6xl font-bold text-center">Todo list</h1>
+    </section>
 
-<%= for todo <- @todos do %>
-    <.form let={f} for={todo} phx-submit="update_todo">
-        <div style="border:solid;border-radius:15px;padding:4px;">
-            <%= hidden_input f, :id %>
-            <%= checkbox f, :done %>
-            <%= text_input f, :title %>
-            <%= submit "Update" %>
-        </div>
-    </.form>
-<% end %>
+    <section class="max-w-md h-[5rem] mx-auto px-8 pt-6 pb-8 mb-4">
+        <.form let={f} for={:todo} phx-submit="add">
+            <%= text_input f, :title, placeholder: "ex: laundry, dishes, etc." %>
+            <%= submit "Add", phx_disable_with: "Adding...", class: "bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"%>
+        </.form>
+    </section>
 
-<button type="button" phx-click="clear_todos" style="background-color:red;border:none;">
-    Clear Done
-</button>
+    <section class="max-w-md mx-auto overflow-y-scroll overflow-hidden">
+        <%= for todo <- @todos do %>
+            <.form let={f} for={todo} phx-submit="update_todo">
+                <div class="p-10 hover:scale-105 rounded">  
+                    <div class="w-full rounded shadow-lg">
+                    <img class="w-full rounded" src="images/notebook.png" alt="Notebook with pen">
+                    <div class="px-6 py-4">
+                        <label class="font-bold text-xl mb-2">
+                            <%= if f.data.done do %>
+                                Done! <%= checkbox f, :done %>
+                            <% else %>
+                                Todo <%= checkbox f, :done %>
+                            <% end %>
+                        </label>
+                        
+                        <p class="text-gray-700 text-base">
+                        <div class="grid grid-cols-1">
+                            <%= hidden_input f, :id %>
+                            <%= text_input f, :title, class: "mb-2" %>
+                            <%= submit "Update", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"%>
+                        </div>
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            </.form>
+        <% end %>
+    </section>
+
+    <section class="max-w-md mx-auto h-[5rem] mt-2">
+        <button type="button" phx-click="clear_todos" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Clear Done
+        </button>
+    </section>
+</container>
+
+

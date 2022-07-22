@@ -12,6 +12,11 @@ module.exports = {
   theme: {
     extend: {},
   },
+  variants: {
+    extend: {
+      animation: ['hover'],
+    },
+  },
   plugins: [
     require('@tailwindcss/forms'),
     plugin(({addVariant}) => addVariant('phx-no-feedback', ['&.phx-no-feedback', '.phx-no-feedback &'])),
