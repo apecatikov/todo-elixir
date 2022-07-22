@@ -9,3 +9,9 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+TodoLive.Repo.insert!(%TodoLive.Todos.Todo{title: "100 push ups"})
+TodoLive.Repo.insert!(%TodoLive.Todos.Todo{title: "100 sit ups"})
+TodoLive.Repo.insert!(%TodoLive.Todos.Todo{title: "100 squats"})
+TodoLive.Repo.insert!(%TodoLive.Todos.Todo{title: "10km run"})
+TodoLive.Repo.insert!(%TodoLive.Todos.Todo{title: "eat 1 banana"})

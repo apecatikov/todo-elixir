@@ -5,8 +5,6 @@ defmodule TodoLiveWeb.TodoLive do
   def mount(_params, _session, socket) do
     Todos.subscribe()
 
-    todos = Todos.list_todos()
-
     {:ok, assign_todos(socket)}
   end
 
