@@ -12,6 +12,7 @@ defmodule TodoLive.TodosTest do
 
     test "list_todos/0 returns all todos" do
       todo = todo_fixture()
+
       assert Todos.list_todos() == [todo]
     end
 

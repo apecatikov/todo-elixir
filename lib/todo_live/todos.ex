@@ -61,12 +61,13 @@ defmodule TodoLive.Todos do
   """
   def create_todo(attrs \\ %{}) do
     case Todo.changeset(%Todo{}, attrs)|> Repo.insert() do
-      {:ok, _todo} = result ->
+      {:ok, todo} = result ->
         broadcast_change(result, [:todo, :created])
+        {:ok, todo}
 
-      {:error, _changeset} ->
+      {:error, changeset} ->
         # add error handling
-        :error
+        {:error, changeset}
     end
 
   end
@@ -91,7 +92,7 @@ defmodule TodoLive.Todos do
 
       {:error, changeset} ->
         #add error handling
-       {:error, %{changeset: changeset, error_msg: "update failed"}}
+       {:error, changeset}
     end
   end
 
@@ -108,9 +109,14 @@ defmodule TodoLive.Todos do
 
   """
   def delete_todo(%Todo{} = todo) do
-    todo
-    |> Repo.delete()
-    |> broadcast_change([:todo, :deleted])
+    case Repo.delete(todo) do
+      {:ok, todo} = result ->
+        broadcast_change(result, [:todo, :deleted])
+        {:ok, todo}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """
