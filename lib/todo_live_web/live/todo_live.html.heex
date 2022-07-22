@@ -1,21 +1,21 @@
-<container class="flex flex-col mx-auto w-[50%]">
-    <section class="w-full h-[5rem] bg-gradient-to-r from-cyan-500 to-blue-500 rounded-sm">
-        <h1 class="text-white text-xl font-bold text-center">Todo list</h1>
+<container class="flex flex-col mx-auto w-[50%] overflow-hidden h-screen rounded-t-lg shadow-lg shadow-cyan-500/70">
+    <section class="w-full h-[7rem] bg-gradient-to-r from-cyan-500 to-blue-500 ">
+        <h1 class="text-white text-6xl font-bold text-center">Todo list</h1>
     </section>
 
-    <section class="max-w-md h-[5rem] mx-auto rounded px-8 pt-6 pb-8 mb-4">
+    <section class="max-w-md h-[5rem] mx-auto px-8 pt-6 pb-8 mb-4">
         <.form let={f} for={:todo} phx-submit="add">
             <%= text_input f, :title, placeholder: "ex: laundry, dishes, etc." %>
-            <%= submit "Add", phx_disable_with: "Adding...", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"%>
+            <%= submit "Add", phx_disable_with: "Adding...", class: "bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"%>
         </.form>
     </section>
 
-    <section class="max-w-md mx-auto">
+    <section class="max-w-md mx-auto overflow-y-scroll overflow-hidden">
         <%= for todo <- @todos do %>
             <.form let={f} for={todo} phx-submit="update_todo">
-                <div class="p-10 hover:border-l-[7px] border-cyan-500">  
-                    <div class="w-full rounded overflow-hidden shadow-lg">
-                    <img class="w-full" src="images/notebook.png" alt="Notebook with pen">
+                <div class="p-10 hover:scale-105 rounded">  
+                    <div class="w-full rounded shadow-lg">
+                    <img class="w-full rounded" src="images/notebook.png" alt="Notebook with pen">
                     <div class="px-6 py-4">
                         <label class="font-bold text-xl mb-2">
                             <%= if f.data.done do %>
@@ -28,8 +28,8 @@
                         <p class="text-gray-700 text-base">
                         <div class="grid grid-cols-1">
                             <%= hidden_input f, :id %>
-                            <%= text_input f, :title %>
-                            <%= submit "Update", class: "bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"%>
+                            <%= text_input f, :title, class: "mb-2" %>
+                            <%= submit "Update", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"%>
                         </div>
                         </p>
                     </div>
@@ -39,7 +39,7 @@
         <% end %>
     </section>
 
-    <section class="max-w-md">
+    <section class="max-w-md mx-auto h-[5rem]">
         <button type="button" phx-click="clear_todos" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
             Clear Done
         </button>
